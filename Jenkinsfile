@@ -39,14 +39,13 @@ pipeline {
           branch 'master'
       }
       environment {
-        TILLER_NAMESPACE = "${env.stagingNamespace}"
         ISTIO_DOMAIN   = "${env.stagingDomain}"
       }
       steps {
         notifyStageStart()
         container('skaffold') {
           unstash 'build'
-          sh "skaffold deploy -a image.json -n ${TILLER_NAMESPACE}"
+          sh "skaffold deploy -a image.json -n ${env.stagingNamespace}"
         }
       }
       post {
@@ -87,14 +86,13 @@ pipeline {
           branch 'master'
       }
       environment {
-        TILLER_NAMESPACE = "${env.productionNamespace}"
         ISTIO_DOMAIN   = "${env.productionDomain}"
       }
       steps {
         notifyStageStart()
         container('skaffold') {
           unstash 'build'
-          sh "skaffold deploy -a image.json -n ${TILLER_NAMESPACE}"
+          sh "skaffold deploy -a image.json -n ${env.productionNamespace}"
         }
       }
       post {
